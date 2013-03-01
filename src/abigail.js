@@ -1,10 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-}
-; ;
-; ;
 var A_RGBA = (function () {
     function A_RGBA(r, g, b, a) {
         this.r = r;
@@ -149,97 +142,6 @@ var A_Canvas = (function () {
     };
     return A_Canvas;
 })();
-var A_Screen = (function () {
-    function A_Screen() {
-        this.bg = new A_RGBA(0, 0, 0, 1);
-        this.loaded = false;
-    }
-    A_Screen.prototype.tick = function (controller) {
-        this.rootNode.tickChildren(controller);
-    };
-    A_Screen.prototype.load = function (controller) {
-        this.rootNode = new A_SceneNode();
-        this.rootNode.addedToSceneGraph(controller);
-        this.loaded = true;
-    };
-    A_Screen.prototype.render = function (controller) {
-        controller.canvas.resetRotation();
-        this.rootNode.render(controller);
-    };
-    A_Screen.prototype.clear = function (controller) {
-        controller.canvas.fillBackground(this.bg);
-    };
-    return A_Screen;
-})();
-var A_LoadingScreen = (function (_super) {
-    __extends(A_LoadingScreen, _super);
-    function A_LoadingScreen() {
-        _super.call(this);
-        this.completed = false;
-        this.textPoint = new A_Point(0, 0);
-        this.color = new A_RGBA(255, 255, 255, 1);
-    }
-    A_LoadingScreen.prototype.tick = function (controller) {
-        if(controller.resources.percentLoaded() >= 1) {
-            this.completed = true;
-        }
-    };
-    A_LoadingScreen.prototype.render = function (controller) {
-        _super.prototype.render.call(this, controller);
-        controller.canvas.drawText(this.textPoint, 'Loading... ' + (controller.resources.percentLoaded() * 100).toString() + '%', this.color);
-    };
-    return A_LoadingScreen;
-})(A_Screen);
-var A_ResourceDefs = (function () {
-    function A_ResourceDefs() {
-        this.images = [];
-        this.animations = [];
-    }
-    return A_ResourceDefs;
-})();
-var A_Resources = (function () {
-    function A_Resources(resourceDefs) {
-        this.resourceDefs = resourceDefs;
-        this.imageCount = 0;
-        this.images = [];
-        this.animations = [];
-        if(resourceDefs) {
-            for(var i in resourceDefs.images) {
-                this.loadImage(i, resourceDefs.images[i]);
-            }
-            for(var a in resourceDefs.animations) {
-                this.animations[a] = resourceDefs.animations[a];
-            }
-        }
-    }
-    A_Resources.prototype.loadImage = function (name, imageUrl) {
-        var i = new Image();
-        i.src = imageUrl;
-        this.images[name] = i;
-        this.imageCount++;
-    };
-    A_Resources.prototype.loadImages = function (images) {
-        for(var i in images) {
-            this.loadImage(i, images[i]);
-        }
-    };
-    A_Resources.prototype.percentLoaded = function () {
-        var completed = 0;
-        if(this.imageCount == 0) {
-            return 1;
-        }
-        for(var i in this.images) {
-            if(this.images[i].complete) {
-                completed++;
-            }
-        }
-        return completed / this.imageCount;
-    };
-    A_Resources.prototype.get = function (name) {
-        return this.images[name];
-    };
-    return A_Resources;
-})();
 var A_Controller = (function () {
     function A_Controller(canvasId, resourceDefs) {
         this.canvasId = canvasId;
@@ -367,6 +269,102 @@ var A_SceneNode = (function () {
         }
     };
     return A_SceneNode;
+})();
+var A_Screen = (function () {
+    function A_Screen() {
+        this.bg = new A_RGBA(0, 0, 0, 1);
+        this.loaded = false;
+    }
+    A_Screen.prototype.tick = function (controller) {
+        this.rootNode.tickChildren(controller);
+    };
+    A_Screen.prototype.load = function (controller) {
+        this.rootNode = new A_SceneNode();
+        this.rootNode.addedToSceneGraph(controller);
+        this.loaded = true;
+    };
+    A_Screen.prototype.render = function (controller) {
+        controller.canvas.resetRotation();
+        this.rootNode.render(controller);
+    };
+    A_Screen.prototype.clear = function (controller) {
+        controller.canvas.fillBackground(this.bg);
+    };
+    return A_Screen;
+})();
+var __extends = this.__extends || function (d, b) {
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var A_LoadingScreen = (function (_super) {
+    __extends(A_LoadingScreen, _super);
+    function A_LoadingScreen() {
+        _super.call(this);
+        this.completed = false;
+        this.textPoint = new A_Point(0, 0);
+        this.color = new A_RGBA(255, 255, 255, 1);
+    }
+    A_LoadingScreen.prototype.tick = function (controller) {
+        if(controller.resources.percentLoaded() >= 1) {
+            this.completed = true;
+        }
+    };
+    A_LoadingScreen.prototype.render = function (controller) {
+        _super.prototype.render.call(this, controller);
+        controller.canvas.drawText(this.textPoint, 'Loading... ' + (controller.resources.percentLoaded() * 100).toString() + '%', this.color);
+    };
+    return A_LoadingScreen;
+})(A_Screen);
+var A_ResourceDefs = (function () {
+    function A_ResourceDefs() {
+        this.images = [];
+        this.animations = [];
+    }
+    return A_ResourceDefs;
+})();
+var A_Resources = (function () {
+    function A_Resources(resourceDefs) {
+        this.resourceDefs = resourceDefs;
+        this.imageCount = 0;
+        this.images = [];
+        this.animations = [];
+        if(resourceDefs) {
+            for(var i in resourceDefs.images) {
+                this.loadImage(i, resourceDefs.images[i]);
+            }
+            for(var a in resourceDefs.animations) {
+                this.animations[a] = resourceDefs.animations[a];
+            }
+        }
+    }
+    A_Resources.prototype.loadImage = function (name, imageUrl) {
+        var i = new Image();
+        i.src = imageUrl;
+        this.images[name] = i;
+        this.imageCount++;
+    };
+    A_Resources.prototype.loadImages = function (images) {
+        for(var i in images) {
+            this.loadImage(i, images[i]);
+        }
+    };
+    A_Resources.prototype.percentLoaded = function () {
+        var completed = 0;
+        if(this.imageCount == 0) {
+            return 1;
+        }
+        for(var i in this.images) {
+            if(this.images[i].complete) {
+                completed++;
+            }
+        }
+        return completed / this.imageCount;
+    };
+    A_Resources.prototype.get = function (name) {
+        return this.images[name];
+    };
+    return A_Resources;
 })();
 var A_RectSceneNode = (function (_super) {
     __extends(A_RectSceneNode, _super);

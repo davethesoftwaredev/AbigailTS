@@ -27,18 +27,30 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-///<reference path='transform.d.ts'/>
-///<reference path='a_animation.ts'/>
-///<reference path='a_rgba.ts'/>
-///<reference path='a_point.ts'/>
-///<reference path='a_rect.ts'/>
-///<reference path='a_canvas.ts'/>
-///<reference path='a_screen.ts'/>
-///<reference path='a_loadingscreen.ts'/>
-///<reference path='a_resources.ts'/>
-///<reference path='a_controller.ts'/>
-///<reference path='a_scenenode.ts'/>
-///<reference path='a_rectscenenode.ts'/>
-///<reference path='a_imagescenenode.ts'/>
-///<reference path='a_animationscenenode.ts'/>
-
+/* A point in 2d space. */
+class A_Point
+{
+	constructor(public x:number, public y:number) {
+	}
+	
+	distancePt(p:A_Point) {
+		var dx = this.x - p.x;
+		var dy = this.y - p.y;
+		
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+	
+	distance(x:number, y:number) {
+		var dx = this.x - x;
+		var dy = this.y - y;
+		
+		return Math.sqrt(dx * dx + dy * dy);	
+	}
+	
+	normalize() {
+		var length = this.distance(0,0);
+		
+		this.x = this.x / length;
+		this.y = this.y / length;
+	}
+}

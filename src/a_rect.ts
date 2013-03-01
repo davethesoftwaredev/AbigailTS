@@ -27,18 +27,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-///<reference path='transform.d.ts'/>
-///<reference path='a_animation.ts'/>
-///<reference path='a_rgba.ts'/>
 ///<reference path='a_point.ts'/>
-///<reference path='a_rect.ts'/>
-///<reference path='a_canvas.ts'/>
-///<reference path='a_screen.ts'/>
-///<reference path='a_loadingscreen.ts'/>
-///<reference path='a_resources.ts'/>
-///<reference path='a_controller.ts'/>
-///<reference path='a_scenenode.ts'/>
-///<reference path='a_rectscenenode.ts'/>
-///<reference path='a_imagescenenode.ts'/>
-///<reference path='a_animationscenenode.ts'/>
 
+/* A 2d rectangle. */
+class A_Rect
+{
+	constructor(public x:number, public y:number, public w:number, public h:number) {
+	}
+	
+	contains(p:A_Point) {
+		return this.x + this.w - p.x > 0 && this.y + this.h - p.y > 0;
+	}
+}
